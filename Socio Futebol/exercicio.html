@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="pt">
+
+<head>
+    <meta charset="UTF-8">
+    <title>socio equipas futebol</title>
+
+    <link rel="stylesheet" href="exercicio.css">
+
+    <script>
+
+        function onAddSocio() {
+            //guardar informação
+            var nome = document.getElementById("nome").value;
+            var telefone = document.getElementById("telefone").value;
+            var email = document.getElementById("email").value;
+            var morada = document.getElementById("morada").value;
+            var clube = document.getElementById("clube").value;
+            var imagem = document.getElementById("imagem").files[0];
+            var listaNovoSocios = document.getElementById("listaNovoSocios");
+
+            //vereficar tudo
+            if (nome == "" || telefone == "" || email == "" || morada == "" || clube == "" || !imagem) {
+                alert("Todos os campos, incluindo a foto, são obrigatórios.");
+                return;
+            }
+
+            //vereficar email
+            if (!/^\S+@\S+\.\S+$/.test(email)) {
+                alert("Por favor, insira um email válido.");
+                return;
+            }
+
+            //verificar telemóvel
+            if (!/^\d{9}$/.test(telefone)) {
+                alert("O telefone deve conter exatamente 9 dígitos.");
+                return;
+            }
+
+            //listar com imagem
+            var reader = new FileReader();
+            reader.onload = function (e) {
+                listaNovoSocios.innerHTML += `<li class='novoSocio'>
+                    <img src="${e.target.result}" alt="Imagem de ${nome}" style="width: 100px; height: auto;"><br>
+                    Nome: ${nome}<br>
+                    Telefone: ${telefone}<br>
+                    Email: ${email}<br>
+                    Morada: ${morada}<br>
+                    Clube: ${clube}
+                </li>`;
+            };
+            reader.readAsDataURL(imagem);
+
+            //Por valores a zero
+            document.getElementById("nome").value = "";
+            document.getElementById("email").value = "";
+            document.getElementById("telefone").value = "";
+            document.getElementById("morada").value = "";
+            document.getElementById("clube").value = "";
+            document.getElementById("imagem").value = "";
+        }
+    </script>
+</head>
+
+<body>
+    <header>
+        <h1>Torne-se sócio de equipas de futebol</h1>
+    </header>
+    <div class="formulario">
+        <label for="nome">Nome:</label>
+        <input id="nome" type="text">
+    </div>
+    <div class="formulario">
+        <label for="email">Email:</label>
+        <input id="email" type="email">
+    </div>
+    <div class="formulario">
+        <label for="telefone">Número telefone:</label>
+        <input id="telefone" type="tel">
+    </div>
+    <div class="formulario">
+        <label for="morada">Morada:</label>
+        <input id="morada" type="text">
+    </div>
+    <div class="formulario">
+        <label for="clube">Clube:</label>
+        <select id="clube" name="clube">
+            <option value="Benfica">Benfica</option>
+            <option value="Porto">Porto</option>
+            <option value="Sporting">Sporting</option>
+            <option value="Braga">Braga</option>
+            <option value="Vitoria">Vitoria</option>
+            <option value="Arouca">Arouca</option>
+            <option value="Moreirense">Moreirense</option>
+            <option value="Famalicão">Famalicão</option>
+            <option value="Casa Pia">Casa Pia</option>
+            <option value="Farense">Farense</option>
+            <option value="Rio Ave">Rio Ave</option>
+            <option value="Boavista">Boavista</option>
+            <option value="Estoril Praia">Estoril Praia</option>
+            <option value="Estrela Amadora">Estrela Amadora</option>
+            <option value="Portimonense">Portimonense</option>
+            <option value="Chaves">Chaves</option>
+            <option value="Vizela">Vizela</option>
+        </select>
+    </div>
+
+    <div class="formulario">
+        <label for="imagem">Foto:</label>
+        <input id="imagem" type="file">
+
+        <input id="botao" type="button" onclick="onAddSocio()" value="Adicionar Sócio">
+        <ul id="listaNovoSocios"></ul>
+        <footer>
+            <p>aluno26255 de TPSI</p>
+        </footer>
+</body>
+
+</html>
