@@ -1,0 +1,67 @@
+body {
+    font-family: 'Arial', sans-serif;
+    background-color: #f4f4f9;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    margin: 0;
+}
+
+.container {
+    flex: 1;
+}
+
+.dados-pais {
+    border: 1px solid #e3e3e3;
+    padding: 15px;
+    margin: 20px;
+    display: inline-block;
+    vertical-align: top;
+    width: 300px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    transition: transform 0.2s;
+    min-height: 400px;
+}
+
+.dados-pais:hover {
+    transform: scale(1.05);
+}
+
+.dados-pais img {
+    max-width: 100%;
+    height: auto;
+    border-radius: 5px;
+    margin-bottom: 15px;
+    max-height: 150px;
+}
+
+.dados-pais h2 {
+    font-size: 1.5rem;
+    margin-bottom: 15px;
+}
+
+.dados-pais .list-group-item {
+    border: none;
+    padding: 0.75rem 1.25rem;
+}
+
+.dados-pais .list-group-item strong {
+    font-weight: 500;
+}
+
+#resultados {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 20px;
+}
+
+footer {
+    background-color: #343a40;
+    color: white;
+    text-align: center;
+    padding: 10px 0;
+    position: sticky;
+    bottom: 0;
+    width: 100%;
+}

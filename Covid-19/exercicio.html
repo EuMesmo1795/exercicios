@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="pt">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Informações sobre COVID-19</title>
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="exercicio.css">
+</head>
+
+<body class="bg-light">
+    <div class="container">
+        <h1 class="text-center my-4">Informações sobre COVID-19</h1>
+        <div class="d-flex justify-content-center mb-4">
+            <input type="text" id="nomePais" class="form-control mr-2" placeholder="Escreva o nome do país (em inglês)"
+                style="max-width: 400px;">
+            <button onclick="buscarDadosCovid()" class="btn btn-primary">Procurar</button>
+        </div>
+        <div id="resultados" class="d-flex flex-wrap justify-content-center"></div>
+    </div>
+    <script>
+        async function buscarDadosCovid() {
+            const nomePais = document.getElementById('nomePais').value.trim().toLowerCase();
+            if (!nomePais) {
+                alert("Por favor, escreva o nome do país.");
+                return;
+            }
+
+            const url = `https://covid-193.p.rapidapi.com/statistics?country=${nomePais}`;
+            const opcoes = {
+                method: 'GET',
+                headers: {
+                    'X-RapidAPI-Key': 'bbdea29bdcmsh028961cfd93d8fcp159407jsn62006eb381e6',
+                    'X-RapidAPI-Host': 'covid-193.p.rapidapi.com'
+                }
+            };
+
+            try {
+                const resposta = await fetch(url, opcoes);
+                const resultado = await resposta.json();
+
+                if (resultado.response && resultado.response.length > 0) {
+                    const dadosPais = resultado.response[0];
+                    await exibirDadosCovid(dadosPais, nomePais);
+                } else {
+                    exibirErro(`Dados não encontrados para o país: ${nomePais}`);
+                }
+            } catch (erro) {
+                console.error(erro);
+                exibirErro(`Ocorreu um erro: ${erro.message}`);
+            }
+        }
+
+        async function exibirDadosCovid(dados, nomePais) {
+            const resultadosDiv = document.getElementById('resultados');
+
+            const respostaBandeira = await fetch(`https://restcountries.com/v3.1/name/${nomePais}`);
+            const dadosBandeira = await respostaBandeira.json();
+            const urlBandeira = dadosBandeira[0]?.flags?.png || '';
+
+            const paisDiv = document.createElement('div');
+            paisDiv.className = 'card m-2 dados-pais';
+            paisDiv.style.width = '18rem';
+            paisDiv.innerHTML = `
+                <img src="${urlBandeira}" class="card-img-top" alt="Bandeira de ${dados.country}" style="max-height: 150px;">
+                <div class="card-body">
+                    <h5 class="card-title text-center">${dados.country}</h5>
+                    <ul class="list-group list-group-flush">
+                        <li class="list-group-item"><strong>Novos casos:</strong> ${dados.cases.new}</li>
+                        <li class="list-group-item"><strong>Total de casos:</strong> ${dados.cases.total}</li>
+                        <li class="list-group-item"><strong>Recuperados:</strong> ${dados.cases.recovered}</li>
+                        <li class="list-group-item"><strong>Total de mortes:</strong> ${dados.deaths.total}</li>
+                        <li class="list-group-item"><strong>Testes realizados:</strong> ${dados.tests.total}</li>
+                    </ul>
+                </div>
+            `;
+
+            resultadosDiv.appendChild(paisDiv);
+        }
+
+        function exibirErro(mensagem) {
+            const resultadosDiv = document.getElementById('resultados');
+            const erroDiv = document.createElement('div');
+            erroDiv.className = 'alert alert-danger m-2';
+            erroDiv.innerHTML = `<p>${mensagem}</p>`;
+            resultadosDiv.appendChild(erroDiv);
+        }
+    </script>
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <footer class="bg-dark text-white text-center py-3 mt-4">
+        <p>Realizado por Aluno26255 de TPSI</p>
+    </footer>
+</body>
+
+</html>
